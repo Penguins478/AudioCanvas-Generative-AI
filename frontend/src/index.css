@@ -1,13 +1,117 @@
+/* index.css */
+
+/* Reset some default browser styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  padding: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Add the Poppins font import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Set a root font size and define some colors */
+:root {
+  --primary-color: #61dafb; /* Your primary color, you can change this */
+  --text-color: #333;
+  --background-color: #f0f0f0;
+}
+
+/* Apply some modern styles to the whole app */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Set a max-width for the app content */
+.App {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px; /* Add padding around everything */
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Update button styles */
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #48b9d6;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Style the audio player */
+audio {
+  display: block;
+  width: 45%;
+  margin-top: 10px;
+}
+
+/* Improve the checkbox label */
+label {
+  margin-right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Enhance the image container */
+img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Add some space between elements */
+div {
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 15px;
+}
+
+p {
+  font-size: 16px;
+}
+
+/* Center everything */
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .App {
+    padding: 20px; /* Adjust the padding for smaller screens if needed */
+  }
 }
