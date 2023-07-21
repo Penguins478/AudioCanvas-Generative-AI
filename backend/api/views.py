@@ -7,33 +7,17 @@ import openai
 import warnings
 from django.core.cache import cache
 from rest_framework import status
+import time
+import math
 
 warnings.filterwarnings("ignore")
 
 openai.api_key = "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"
 
-# @api_view(['POST'])
-# def process_audio(request):
-#     if request.method == 'POST':
-#         serializer = AudioRecordSerializer(data=request.data)
-#         # print(serializer.is_valid())
-#         # print(request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             audio_record = serializer.instance
-#             audio_path = audio_record.audio_file.path
-#             transcript, image_url = whisper_transcribe(audio_path)
-#             audio_record.transcription = transcript
-#             audio_record.image_url = image_url
-#             audio_record.save()
-#             response_serializer = AudioRecordSerializer(audio_record)
-#             return Response(response_serializer.data)
-#         return Response(serializer.errors, status=400)
-#     return Response({'message': 'Invalid request'}, status=400)
-
 @api_view(['POST'])
 def process_audio(request):
     if request.method == 'POST':
+        start = time.perf_counter()
         serializer = AudioRecordSerializer(data=request.data)
 
         # Get the 'use_cache' value from the request data
@@ -49,6 +33,8 @@ def process_audio(request):
             audio_record.image_url = image_url
             audio_record.save()
             response_serializer = AudioRecordSerializer(audio_record)
+            end = time.perf_counter()
+            print("Time Elapsed (Backend): " + str(truncate(end - start, 2)) + "s")
             return Response(response_serializer.data)
         return Response(serializer.errors, status=400)
     return Response({'message': 'Invalid request'}, status=400)
@@ -79,37 +65,6 @@ def dall_e_api(dalle_prompt):
     image_url = dalle_response['data'][0]['url']
     return image_url
 
-# def whisper_transcribe(audio):
-#     os.rename(audio, audio + '.wav')
-#     audio_file = open(audio + '.wav', "rb")
-#     transcript = openai.Audio.transcribe("whisper-1", audio_file)
-#     dalle_prompt = chatgpt_api(transcript["text"])
-#     image_url = dall_e_api(dalle_prompt)
-#     return transcript["text"], image_url
-
-# def whisper_transcribe(audio):
-#     os.rename(audio, audio + '.wav')
-#     audio_file = open(audio + '.wav', "rb")
-
-#     # Get the audio transcription
-#     transcript = openai.Audio.transcribe("whisper-1", audio_file)["text"]
-
-#     # Check if the image URL is already cached
-#     image_cache_key = f"image_url:{transcript}"
-#     image_url = cache.get(image_cache_key)
-
-#     if image_url is None:
-#         # Get the DALL-E prompt using the transcript
-#         dalle_prompt = chatgpt_api(transcript)
-
-#         # Generate the image URL using the DALL-E prompt
-#         image_url = dall_e_api(dalle_prompt)
-
-#         # Cache the image URL for future use
-#         cache.set(image_cache_key, image_url)
-
-#     return transcript, image_url
-
 def whisper_transcribe(audio, use_cache):
     os.rename(audio, audio + '.wav')
     audio_file = open(audio + '.wav', "rb")
@@ -137,4 +92,20 @@ def whisper_transcribe(audio, use_cache):
         cache.set(image_cache_key, image_url)
 
     return transcript, image_url
+
+import math
+
+def truncate(number, decimals=0):
+    """
+    Returns a value truncated to a specific number of decimal places.
+    """
+    if not isinstance(decimals, int):
+        raise TypeError("decimal places must be an integer.")
+    elif decimals < 0:
+        raise ValueError("decimal places has to be 0 or more.")
+    elif decimals == 0:
+        return math.trunc(number)
+
+    factor = 10.0 ** decimals
+    return math.trunc(number * factor) / factor
 
