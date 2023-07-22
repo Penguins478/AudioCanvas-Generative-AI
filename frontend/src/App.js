@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
@@ -8,8 +8,10 @@ function App() {
   const [transcription, setTranscription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [useCache, setUseCache] = useState(false);
+  const [processingTime, setProcessingTime] = useState(0);
   const mediaRecorderRef = useRef(null);
   const audioPlayerRef = useRef(null);
+  const timerRef = useRef(null);
 
   const toggleCacheState = () => {
     setUseCache(!useCache);
@@ -65,12 +67,30 @@ function App() {
           const { transcription, image_url } = response.data;
           setTranscription(transcription);
           setImageUrl(image_url);
+          clearInterval(timerRef.current);
+          timerRef.current = null;
         })
         .catch(error => {
           console.error('Error sending audio to the server:', error);
         });
+
+        // Start the timer when the user presses generate image
+        const startTime = Date.now();
+        setProcessingTime(0);
+        timerRef.current = setInterval(() => {
+          const elapsedTime = Date.now() - startTime;
+          setProcessingTime(elapsedTime);
+        }, 1);
     }
   };
+
+  // useEffect(() => {
+  //   // Clear the timer when the image is outputted
+  //   if (imageUrl) {
+  //     clearInterval(timerRef.current);
+  //     timerRef.current = null;
+  //   }
+  // }, [imageUrl]);
 
   // console.log(useCache);
 
@@ -112,6 +132,11 @@ function App() {
       </div>
       
       <div><p>Please wait a couple seconds after submitting the audio for processing time.</p></div>
+      
+      <div>
+        <p>Processing Time: {processingTime / 1000} seconds</p>
+      </div>
+      
       {transcription && (
         <div>
           <h2>Transcription:</h2>

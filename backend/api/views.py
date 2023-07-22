@@ -17,7 +17,7 @@ openai.api_key = "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"
 @api_view(['POST'])
 def process_audio(request):
     if request.method == 'POST':
-        start = time.perf_counter()
+        # start = time.perf_counter()
         serializer = AudioRecordSerializer(data=request.data)
 
         # Get the 'use_cache' value from the request data
@@ -33,8 +33,8 @@ def process_audio(request):
             audio_record.image_url = image_url
             audio_record.save()
             response_serializer = AudioRecordSerializer(audio_record)
-            end = time.perf_counter()
-            print("Time Elapsed (Backend): " + str(truncate(end - start, 2)) + "s")
+            # end = time.perf_counter()
+            # print("Time Elapsed (Backend): " + str(truncate(end - start, 2)) + "s")
             return Response(response_serializer.data)
         return Response(serializer.errors, status=400)
     return Response({'message': 'Invalid request'}, status=400)
