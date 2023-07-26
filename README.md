@@ -9,5 +9,6 @@ Make sure to turn on the sound before you watch the demo.
 Watch it here:
 
 
-https://github.com/Penguins478/Generative-AI-Voice-to-Text-to-Drawing/assets/19849726/15432b10-e22a-4a43-b80d-6f118285141c
+https://github.com/Penguins478/Generative-AI-Voice-to-Text-to-Drawing/assets/19849726/0d60018e-e3da-424c-b84d-b12b899b9c0d
+
 
