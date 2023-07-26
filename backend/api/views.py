@@ -9,10 +9,11 @@ from django.core.cache import cache
 from rest_framework import status
 import time
 import math
+from .models import CachedImage
 
 warnings.filterwarnings("ignore")
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 @api_view(['POST'])
 def process_audio(request):
@@ -90,6 +91,16 @@ def whisper_transcribe(audio, use_cache):
     if use_cache == 'true':
         # Cache the image URL for future use
         cache.set(image_cache_key, image_url)
+
+    # Check if the transcription is already in the database
+    try:
+        cached_image = CachedImage.objects.get(transcription=transcript)
+        image_url = cached_image.image_url
+    except CachedImage.DoesNotExist:
+        # If not in the database, generate the image URL and save it to the database
+        # ... Your existing code to generate the image_url ...
+        cached_image = CachedImage(transcription=transcript, image_url=image_url)
+        cached_image.save()
 
     return transcript, image_url
 

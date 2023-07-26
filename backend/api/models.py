@@ -7,3 +7,10 @@ class AudioRecord(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+class CachedImage(models.Model):
+    transcription = models.TextField(unique=True)
+    image_url = models.URLField()
+
+    def __str__(self):
+        return self.transcription
