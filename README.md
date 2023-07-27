@@ -1,4 +1,4 @@
-# Generative-AI-Voice-to-Text-to-Drawing
+# AudioCanvas-Generative-AI
 
 Full stack web application that utilizes OpenAI's GPT-3.5 Turbo LLM and DALL-E model to translate sound to text to an image.
 
